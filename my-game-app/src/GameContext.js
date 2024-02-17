@@ -6,9 +6,16 @@ export const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const [players, setPlayers] = useState([]);
-  const [roles, setRoles] = useState(['HeadMafia', 'Mafia', 'Block Mafia', 'Assassin', 'Bard', 'Doctor', 'Knight', 'Police', 'Revealer', 'Villager']);
+  const [currentRound, setCurrentRound] = useState(1); // Added state to track the current round
+  const [roles, setRoles] = useState([
+    'HeadMafia', 'Mafia', 'Block Mafia', 'Assassin', 'Bard', 'Doctor', 'Knight', 'Police', 'Revealer', 'Villager'
+  ]);
   const [eliminations, setEliminations] = useState({});
   const [voteCounts, setVoteCounts] = useState({});
+
+  const resetVotes = () => {
+    setVoteCounts({});
+  };
 
   const addPlayer = (player) => {
     setPlayers(prevPlayers => [...prevPlayers, player]);
@@ -39,6 +46,7 @@ export const GameProvider = ({ children }) => {
     setPlayers([]);
     setEliminations({});
     setVoteCounts({});
+    setCurrentRound(1); // Reset the round when clearing all
   };
 
   const addRole = (newRole) => {
@@ -48,12 +56,8 @@ export const GameProvider = ({ children }) => {
   };
 
   const eliminatePlayer = (playerName, method) => {
-    setEliminations(prevEliminations => ({
-      ...prevEliminations,
-      [playerName]: method
-    }));
     setPlayers(prevPlayers => prevPlayers.map(player =>
-      player.name === playerName ? { ...player, eliminated: true } : player
+      player.name === playerName ? { ...player, eliminated: true, eliminationMethod: method, eliminationRound: currentRound } : player
     ));
   };
 
@@ -78,7 +82,8 @@ export const GameProvider = ({ children }) => {
   return (
     <GameContext.Provider value={{
       players, roles, addPlayer, deletePlayer, shuffleRoles, clearAll, addRole,
-      eliminations, eliminatePlayer, voteCounts, recordVote
+      eliminations, eliminatePlayer, voteCounts, recordVote, resetVotes, 
+      currentRound, setCurrentRound // Expose the currentRound and its setter
     }}>
       {children}
     </GameContext.Provider>
