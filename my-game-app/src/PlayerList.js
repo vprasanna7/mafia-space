@@ -16,6 +16,7 @@ const PlayerList = () => {
       ))}
     </ul>
   );
+  
 };
 
 export default PlayerList;

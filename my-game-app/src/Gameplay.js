@@ -46,21 +46,20 @@ const Gameplay = ({ goBackToSetup }) => {
 
   return (
     <div className="gameplay-container">
-      <h2>Gameplay - Game Round {currentRound}, Voting Round {votingRound}</h2>
-      {players.map((player) => (
-        <div key={player.name} className={`player ${player.eliminated ? 'eliminated' : ''}`}>
-          <p>
-            {player.name} - {player.role}
-            {player.eliminated && ` - Eliminated by ${player.eliminationMethod} in round ${player.eliminationRound}`}
-          </p>
-          {!player.eliminated && (
-            <div className="voting-buttons">
-              {players.filter(p => p.name !== player.name).map((p) => (
-                <button key={p.name} onClick={() => handleVote(player.name, p.name)}
-                        disabled={player.eliminated}
-                        className={isVoted(player.name, p.name) ? 'voted' : ''}>
-                  Vote {p.name}
-                </button>
+    <h2>Gameplay - Game Round {currentRound}, Voting Round {votingRound}</h2>
+    {players.map((player) => (
+      <div key={player.name} className={`player ${player.eliminated ? 'eliminated' : ''}`}>
+        <p>
+          {player.name} - {player.role}
+          {player.eliminated && ` - Eliminated by ${player.eliminationMethod} in round ${player.eliminationRound}`}
+        </p>
+        {!player.eliminated && (
+          <div className="voting-buttons">
+            {players.filter(p => !p.eliminated && p.name !== player.name).map((p) => (
+              <button key={p.name} onClick={() => handleVote(player.name, p.name)}
+                      className={isVoted(player.name, p.name) ? 'voted' : ''}>
+                Vote {p.name}
+              </button>
               ))}
             </div>
           )}

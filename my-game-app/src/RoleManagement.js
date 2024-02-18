@@ -8,8 +8,8 @@ const RoleManagement = () => {
 
   return (
     <div>
-      <button onClick={shuffleRoles}>Shuffle Roles</button>
-      <button onClick={clearAll}>Clear All</button>
+      <button className='action-button' onClick={shuffleRoles}>Shuffle Roles</button>
+      <button className='action-button' onClick={clearAll}>Clear All</button>
     </div>
   );
 };
